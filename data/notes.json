@@ -1,16 +1,5 @@
 [
   {
-    "id": "c21970bf",
-    "title": "test",
-    "categories": [
-      "test"
-    ],
-    "date": "2026-08-16",
-    "content": "test",
-    "createdAt": "2026-08-16T08:55:23.746Z",
-    "updatedAt": "2026-08-16T08:55:23.746Z"
-  },
-  {
     "id": "42ef6ce7",
     "title": "LLM Interview",
     "categories": [
