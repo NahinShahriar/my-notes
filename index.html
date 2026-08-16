@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger — Personal Notebook</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📓</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== SETUP SCREEN ===== -->
+<div id="setup-screen" class="setup-screen">
+  <div class="setup-card">
+    <div class="setup-mark">📓</div>
+    <h1>Ledger</h1>
+    <p class="setup-sub">তোমার GitHub repo-ই এখন তোমার ডাটাবেস। কোনো সার্ভার নেই, শুধু commit।</p>
+
+    <form id="setup-form" autocomplete="off">
+      <label>GitHub username
+        <input type="text" id="cfg-owner" placeholder="e.g. nadid-dev" required>
+      </label>
+      <label>Repository নাম
+        <input type="text" id="cfg-repo" placeholder="e.g. my-notes" required>
+      </label>
+      <label>Branch
+        <input type="text" id="cfg-branch" placeholder="main" value="main">
+      </label>
+      <label>Personal Access Token
+        <input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxx" required>
+      </label>
+      <p class="hint">Fine-grained token বানাও, শুধু এই repo-তে, শুধু <b>Contents: Read & Write</b> permission দিয়ে। Token শুধু তোমার ব্রাউজারে (localStorage) থাকবে, অন্য কোথাও যাবে না।</p>
+      <button type="submit" class="btn-primary">Connect &amp; Open Notebook →</button>
+    </form>
+    <p id="setup-error" class="setup-error"></p>
+  </div>
+</div>
+
+<!-- ===== APP SHELL ===== -->
+<div id="app" class="app hidden">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">📓</span>
+      <div>
+        <div class="brand-name">Ledger</div>
+        <div id="repo-label" class="brand-repo">—</div>
+      </div>
+    </div>
+
+    <button id="new-note-btn" class="btn-primary btn-block">+ নতুন এন্ট্রি</button>
+
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="খুঁজো... title বা content">
+    </div>
+
+    <div class="cat-list">
+      <div class="cat-heading">CATEGORY</div>
+      <ul id="category-list"></ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <button id="sync-btn" class="btn-ghost btn-block" title="Reload from GitHub">↻ Sync</button>
+      <button id="export-btn" class="btn-ghost btn-block">⇩ Export JSON</button>
+      <button id="logout-btn" class="btn-ghost btn-block">Disconnect</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div id="status-bar" class="status-bar"></div>
+
+    <!-- LIST VIEW -->
+    <div id="list-view" class="list-view">
+      <div class="list-header">
+        <h2 id="list-title">সব এন্ট্রি</h2>
+        <span id="list-count" class="list-count"></span>
+      </div>
+      <div id="notes-list" class="notes-list"></div>
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-mark">✎</div>
+        <p>এখনো কোনো এন্ট্রি নেই। প্রথম নোটটা লিখে ফেলো।</p>
+      </div>
+    </div>
+
+    <!-- EDITOR VIEW -->
+    <div id="editor-view" class="editor-view hidden">
+      <div class="editor-header">
+        <button id="back-btn" class="btn-ghost">← ফিরে যাও</button>
+        <div class="editor-actions">
+          <button id="preview-toggle" class="btn-ghost">Preview</button>
+          <button id="delete-btn" class="btn-danger hidden">Delete</button>
+          <button id="save-btn" class="btn-primary">Save → commit</button>
+        </div>
+      </div>
+
+      <input type="text" id="edit-title" class="edit-title" placeholder="Entry title...">
+
+      <div class="edit-meta">
+        <label>Date
+          <input type="date" id="edit-date">
+        </label>
+        <label class="grow">Categories <span class="meta-hint">(comma দিয়ে আলাদা করো)</span>
+          <input type="text" id="edit-categories" placeholder="e.g. bb-ad, networking, math">
+        </label>
+      </div>
+
+      <textarea id="edit-content" class="edit-content" placeholder="Markdown-এ লেখো... **bold**, `code`, ## heading, - list"></textarea>
+      <div id="preview-pane" class="preview-pane hidden"></div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
